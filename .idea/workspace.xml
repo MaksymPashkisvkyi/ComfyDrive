@@ -62,9 +62,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/store" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/store/static/store/images" />
-      <recent name="$PROJECT_DIR$/templates/store" />
     </key>
   </component>
   <component name="RunManager">
