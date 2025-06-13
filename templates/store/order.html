@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Оформлення замовлення{% endblock %}
+
+{% block content %}
+    <h2>Оформлення замовлення</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- 🛒 Показати товари в кошику -->
+    {% if products %}
+        <h4>Ваше замовлення:</h4>
+        <ul class="list-group mb-3">
+            {% for product in products %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ product.title }}
+                    <span class="text-success">{{ product.price }} ₴</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Кошик порожній. <a href="/">Перейти до товарів</a></p>
+    {% endif %}
+
+    <!-- 📬 Форма замовлення -->
+    {% if products %}
+        <form method="post" class="mb-5">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Ім’я</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Телефон</label>
+                <input type="text" name="phone" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Адреса доставки</label>
+                <textarea name="address" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Підтвердити замовлення</button>
+        </form>
+    {% endif %}
+{% endblock %}

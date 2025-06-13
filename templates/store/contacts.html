@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Контакти{% endblock %}
+{% block content %}
+
+    <h2>Звʼяжіться з нами</h2>
+
+    <p>📞 Телефон: <a href="tel:+380971234567">+38 (097) 123-45-67</a></p>
+    <p>📧 Email: <a href="mailto:info@autodrop.ua">info@autodrop.ua</a></p>
+    <p>💬 Telegram: <a href="https://t.me/autodrop_support" target="_blank">@autodrop_support</a></p>
+
+    <hr class="my-5">
+
+    <h4>Ми на карті</h4>
+    <div class="ratio ratio-16x9 mb-4">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d175899.19665842794!2d30.546978378844457!3d46.46009015867705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c6318a0b864c43%3A0x129f8fe28cf2176c!2z0J7QtNC10YHRgdCwLCDQntC00LXRgdGB0LrQsNGPINC-0LHQu9Cw0YHRgtGMLCA2NTAwMA!5e0!3m2!1sru!2sua!4v1749841356042!5m2!1sru!2sua"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <p><strong>Склад:</strong> вул. Прикладна, 12, м. Одеса</p>
+
+
+    <hr>
+
+    <h4 class="mt-4">Форма зворотного зв’язку</h4>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Надіслати</button>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Django
+/staticfiles/
+/media/
+
+# Virtualenv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Чутливі файли
+.env
+*.pem
