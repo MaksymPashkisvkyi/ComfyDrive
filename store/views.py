@@ -1,165 +1,177 @@
+# store/views.py
 import os
-import requests
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ContactForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.core.mail import send_mail
 from .models import Product, Category, Order, OrderItem
-from django.contrib import messages
+from .forms import OrderCreateForm
+from .utils import send_telegram_message
 
 
-def product_list(request):
-    category_id = request.GET.get('category')
-    search_query = request.GET.get('search_query')
+# Helper to get cart items from session
+def get_cart_products(request):
+    cart = request.session.get('cart', [])  # список ID товарів
+    return Product.objects.filter(id__in=cart)
 
-    products = Product.objects.filter(available=True)
-    all_products = Product.objects.all()
+
+# Base context processor for categories and cart count
+def common_context(request):
     categories = Category.objects.all()
+    cart_products = get_cart_products(request)
+    return {
+        'categories': categories,
+        'cart_items': cart_products,
+    }
 
+
+# Product list view
+def product_list(request):
+    # Початковий queryset
+    products = Product.objects.filter(available=True)
+
+    # Фільтрація за категорією
+    category_id = request.GET.get('category')
     if category_id:
-        products = products.filter(category__id=category_id)
+        products = products.filter(category_id=category_id)
 
-    if search_query:
-        products = products.filter(title__icontains=search_query)
+    # Пошук
+    query = request.GET.get('q')
+    if query:
+        products = products.filter(title__icontains=query)
 
-    return render(request, 'store/product_list.html', {
-        'products': products,
-        'all_products': all_products,
-        'categories': categories
-    })
-
-
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'store/product_detail.html', {'product': product})
+    context = common_context(request)
+    context.update({'products': products})
+    return render(request, 'store/product_list.html', context)
 
 
+# Product detail view
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id, available=True)
+    context = common_context(request)
+    context.update({'product': product})
+    return render(request, 'store/product_detail.html', context)
+
+
+# Cart view (simple display)
+def cart_view(request):
+    cart_products = get_cart_products(request)
+    context = common_context(request)
+    context.update({'cart_items': cart_products})
+    return render(request, 'store/cart.html', context)
+
+
+# Add to cart
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', [])
     if product_id not in cart:
         cart.append(product_id)
-        request.session['cart'] = cart
-        messages.success(request, "Товар додано в кошик.")
+    request.session['cart'] = cart
     return redirect('cart_view')
 
 
+# Remove from cart
 def remove_from_cart(request, product_id):
+    """
+    Видаляє товар із сесійного кошика за його ID і редіректить назад у кошик.
+    """
     cart = request.session.get('cart', [])
     if product_id in cart:
         cart.remove(product_id)
-        request.session['cart'] = cart
-        messages.info(request, "Товар видалено з кошика.")
+    request.session['cart'] = cart
     return redirect('cart_view')
 
 
-def cart_view(request):
-    cart = request.session.get('cart', [])
-    products = Product.objects.filter(id__in=cart)
-    return render(request, 'store/cart.html', {'products': products})
-
-
 def order_view(request):
+    # Загальний контекст
+    categories = Category.objects.all()
     cart = request.session.get('cart', [])
     products = Product.objects.filter(id__in=cart)
+    cart_items = products
 
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
+        # Забираємо і чистимо вхідні дані
+        name = request.POST.get('name', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        address = request.POST.get('address', '').strip()
 
-        product_list = "\n".join([f"- {p.title} ({p.price} ₴)" for p in products])
+        # Якщо хоч якесь поле пусте — повертаємо форму з помилкою
+        if not (name and phone and address):
+            messages.error(request, 'Будь ласка, заповніть усі поля форми.')
+            return render(request, 'store/order.html', {
+                'products': products,
+                'categories': categories,
+                'cart_items': cart_items,
+                # щоб зберігся введений раніше текст
+                'form_data': {'name': name, 'phone': phone, 'address': address},
+            })
 
-        # Створення замовлення в базі
+        # Формуємо текст списку товарів
+        product_lines = [f"- {p.title} ({p.price} ₴)" for p in products]
+        product_list = "\n".join(product_lines)
+
+        # Створюємо замовлення
         order = Order.objects.create(
             name=name,
             phone=phone,
             address=address
         )
+        for p in products:
+            OrderItem.objects.create(order=order, product=p, price=p.price)
 
-        # Додати кожен товар
-        for product in products:
-            OrderItem.objects.create(
-                order=order,
-                product=product,
-                price=product.price
-            )
-
-        # Email повідомлення
-        email_subject = "Нове замовлення з ComfyDrive"
-        email_message = f"""
-Нове замовлення з сайту ComfyDrive:
-
-👤 Ім’я: {name}
-📞 Телефон: {phone}
-🏠 Адреса: {address}
-
-🛒 Товари:
-{product_list}
-"""
+        # Email
+        subject = "🔔 Нове замовлення з ComfyDrive"
+        message = (
+            f"👤 Ім’я: {name}\n"
+            f"📞 Телефон: {phone}\n"
+            f"🏠 Адреса: {address}\n\n"
+            f"🛒 Товари:\n{product_list}"
+        )
         send_mail(
-            email_subject,
-            email_message,
-            None,
-            [os.getenv('EMAIL_HOST_USER')],
+            subject,
+            message,
+            os.getenv('EMAIL_HOST_USER'),
+            [os.getenv('EMAIL_NOTIFICATION_RECIPIENT', os.getenv('EMAIL_HOST_USER'))],
+            fail_silently=False,
         )
 
-        # Telegram повідомлення
-        telegram_text = f"""
-📦 НОВЕ ЗАМОВЛЕННЯ:
+        # Telegram
+        telegram_text = (
+                f"*Нове замовлення:*\n"
+                f"👤 {name}\n"
+                f"📞 {phone}\n"
+                f"🏠 {address}\n\n"
+                f"🛒 Товари:\n" + "\n".join(product_lines)
+        )
+        try:
+            send_telegram_message(telegram_text)
+        except Exception as e:
+            print("Telegram send error:", e)
 
-👤 {name}
-📞 {phone}
-🏠 {address}
-
-🛒 Товари:
-{product_list}
-"""
-        send_telegram_message(telegram_text)
-
-        # Очистити кошик і показати повідомлення
+        # Очищуємо кошик і відправляємо успіх
         request.session['cart'] = []
-        messages.success(request, 'Замовлення оформлено. Очікуйте дзвінка!')
+        messages.success(request, 'Дякуємо! Ваше замовлення прийнято.')
         return redirect('product_list')
 
-    return render(request, 'store/order.html', {'products': products})
+    # GET — відображаємо форму
+    return render(request, 'store/order.html', {
+        'products': products,
+        'categories': categories,
+        'cart_items': cart_items,
+        'form_data': {'name': '', 'phone': '', 'address': ''},
+    })
 
 
+# Тепер додаємо нові в’юхи для статичних сторінок:
 def about_view(request):
-    return render(request, 'store/about.html')
-
-
-def delivery_view(request):
-    return render(request, 'store/delivery.html')
+    context = common_context(request)
+    return render(request, 'store/about.html', context)
 
 
 def contacts_view(request):
-    form = ContactForm()
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            subject = f"Новий запит із сайту ComfyDrive від {form.cleaned_data['name']}"
-            message = f"""
-                Ім’я: {form.cleaned_data['name']}
-                Email: {form.cleaned_data['email']}
-                Повідомлення:
-                {form.cleaned_data['message']}
-                """
-            send_mail(
-                subject,
-                message,
-                None,  # from email
-                ['yourname@gmail.com'],  # ← заміни на свою пошту
-            )
-            messages.success(request, 'Дякуємо! Ваше повідомлення надіслано.')
-            form = ContactForm()
-    return render(request, 'store/contacts.html', {'form': form})
+    context = common_context(request)
+    return render(request, 'store/contacts.html', context)
 
 
-def send_telegram_message(text):
-    token = os.getenv('TELEGRAM_BOT_TOKEN')
-    chat_id = os.getenv('TELEGRAM_CHAT_ID')
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    data = {'chat_id': chat_id, 'text': text}
-    try:
-        requests.post(url, data=data)
-    except Exception as e:
-        print("❌ Telegram Error:", e)
+def delivery_view(request):
+    context = common_context(request)
+    return render(request, 'store/delivery.html', context)

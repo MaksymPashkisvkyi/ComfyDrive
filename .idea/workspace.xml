@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee2a6ee2-f911-4da6-8c55-5b2b1fe961e7" name="Changes" comment="" />
+    <list default="true" id="ee2a6ee2-f911-4da6-8c55-5b2b1fe961e7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/store/static/store/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/static/store/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/store/partials/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/store/partials/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ComfyDrive.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ComfyDrive.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ComfyDrive/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ComfyDrive/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/static/store/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/contacts.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/contacts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/delivery.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/delivery.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/product_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/product_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/store/product_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/store/product_list.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,30 +67,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/templates/store" />
-      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/store/static/store" />
       <recent name="$PROJECT_DIR$/store/static/store/images" />
+      <recent name="$PROJECT_DIR$/store/static/store/css" />
+      <recent name="$PROJECT_DIR$/store/static/store/js" />
+      <recent name="$PROJECT_DIR$/templates" />
     </key>
   </component>
   <component name="RunManager">
@@ -112,6 +138,7 @@
       <option name="presentableId" value="Default" />
       <updated>1749834701291</updated>
       <workItem from="1749834702305" duration="10188000" />
+      <workItem from="1749909659265" duration="14713000" />
     </task>
     <servers />
   </component>

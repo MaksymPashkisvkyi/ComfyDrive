@@ -1,0 +1,126 @@
+{% load static %}
+<header class="header navbar-area">
+    <!-- Start Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="top-left">
+                        <ul class="menu-top-link">
+                            <li><i class="lni lni-phone"></i> +380 (99) 123-45-67</li>
+                            <li><i class="lni lni-envelope"></i> support@comfydrive.ua</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="top-end">
+                        <ul class="user-login">
+                            <li><a href="/admin/">Адмінка</a></li>
+                            <li><a href="/cart/">Кошик</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Topbar -->
+
+    <!-- Start Header Middle -->
+    <div class="header-middle">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-7">
+                    <div class="logo">
+                        <a href="/">
+                            <img src="{% static 'store/images/logo.png' %}" alt="ComfyDrive Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-7 d-none d-lg-block">
+                    <div class="main-menu-search">
+                        <form method="get" action="/">
+                            <div class="navbar-search search-style-5">
+                                <input type="text" name="q" class="form-control" placeholder="Пошук..."
+                                       value="{{ request.GET.q }}">
+                                <button class="search-btn" type="submit"><i class="lni lni-search-alt"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-2 col-5">
+                    <div class="middle-right-area">
+                        <div class="navbar-cart">
+                            <div class="wishlist">
+                                <a href="#"><i class="lni lni-heart"></i></a>
+                            </div>
+                            <div class="cart-items">
+                                <a href="/cart/" class="main-btn">
+                                    <i class="lni lni-cart"></i>
+                                    <span class="total-items">{{ cart_items|length }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header Middle -->
+
+    <!-- Start Header Bottom -->
+    <div class="header-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-6 col-12">
+                    <div class="nav-inner">
+                        <!-- Start Mega Category Menu -->
+                        <div class="mega-category-menu">
+                            <span class="cat-button"><i class="lni lni-menu"></i>Категорії</span>
+                            <ul class="sub-category">
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product_list' %}?category={{ category.id }}">{{ category.title }}
+                                            <i class="lni lni-chevron-right"></i></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- End Mega Category Menu -->
+                        <!-- Start Navbar -->
+                        <nav class="navbar navbar-expand-lg">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ms-auto">
+                                    <li class="nav-item"><a href="/" class="nav-link">Головна</a></li>
+                                    <li class="nav-item"><a href="{% url 'product_list' %}" class="nav-link">Каталог</a>
+                                    </li>
+                                    <li class="nav-item"><a href="{% url 'contacts' %}" class="nav-link">Контакти</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                        <!-- End Navbar -->
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <!-- Start Nav Social -->
+                    <div class="nav-social">
+                        <h5 class="title">Ми в соціальних мережах:</h5>
+                        <ul>
+                            <li><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
+                            <li><a href="#"><i class="lni lni-twitter-original"></i></a></li>
+                            <li><a href="#"><i class="lni lni-instagram"></i></a></li>
+                            <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- End Nav Social -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header Bottom -->
+</header>

@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyDrive</title>
+    <link rel="shortcut icon" href="{% static 'store/images/favicon.ico' %}" type="image/x-icon">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/LineIcons.3.0.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/glightbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/tiny-slider.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/main.css' %}">
+</head>
+<body>
+{% include 'store/partials/header.html' %}
+<main class="main-content">
+    {% block content %}{% endblock %}
+</main>
+{% include 'store/partials/footer.html' %}
+<!-- Scripts -->
+<script src="{% static 'store/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'store/js/glightbox.min.js' %}"></script>
+<script src="{% static 'store/js/tiny-slider.js' %}"></script>
+<script src="{% static 'store/js/main.js' %}"></script>
+</body>
+</html>
